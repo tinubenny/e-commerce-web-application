@@ -1,0 +1,79 @@
+{% extends 'seller/base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<main class="col-md-9">
+    <!-- ========================= SECTION CONTENT ========================= -->
+    <section class="section-content padding-y">
+
+        <!-- ============================ COMPONENT REGISTER   ================================= -->
+        <div class="card mx-auto" style="max-width:520px; margin-top:40px;">
+            <article class="card-body">
+                <header class="mb-4">
+                    <h4 class="card-title">Add Product</h4>
+                </header>
+                <form action="" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class=" form-group">
+                        <label>Product Category</label>
+                        <select class="form-control" name="category" id="category">
+                            {% for item in category %}
+                            <option value="{{item.id}}">{{item.category}}</option>
+                            
+                            {% endfor %}
+                        </select>
+                    </div> <!-- form-group end.// -->
+
+                    <div class=" form-group">
+                        <label>Product name</label>
+                        <input type="text" class="form-control" name="product_name">
+                    </div> <!-- form-group end.// -->
+                    <div class=" form-group">
+                        <label>Product code</label>
+                        <input type="text" class="form-control" name="product_code">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea type="text" class="form-control" name="description"></textarea>
+                    </div> <!-- form-group end.// -->
+
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label>Stock</label>
+                            <input type="number" class="form-control" name="stock">
+                        </div> <!-- form-group end.// -->
+                    </div> <!-- form-row.// -->                    
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>Price</label>
+                            <input type="text" class="form-control" name="price">
+                        </div> <!-- form-group end.// -->
+                        <div class="form-group col-md-6">
+                            <label>Image</label>
+                            <input type="file" class="form-control" name="image">
+                        </div> <!-- form-group end.// -->
+                    </div> <!-- form-row.// -->
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block"> Add product </button>
+                    </div> <!-- form-group// -->
+                    {{message}}
+                </form>
+            </article><!-- card-body.// -->
+        </div> <!-- card .// -->
+        
+        <br><br>
+        <!-- ============================ COMPONENT REGISTER  END.// ================================= -->
+
+
+    </section>
+    <!-- ========================= SECTION CONTENT END// ========================= -->
+
+
+</main>
+
+
+{% endblock %}

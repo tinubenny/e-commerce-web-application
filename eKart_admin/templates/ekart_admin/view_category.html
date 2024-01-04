@@ -1,0 +1,29 @@
+{% extends 'ekart_admin/base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<main class="col-md-9">
+   <h1>view_category</h1>
+   <div class="row">
+      {% for item in category %}
+
+      <div class="card card-product-grid" style="width: 18rem;">
+         <a href="">
+            <img src="{{item.cover_picture.url}}" class="card-img-top" alt="...">
+
+         </a>
+         <div class="card-body">
+            <h5 class="card-title">{{item.category}}</h5>
+            <p class="card-text">{{item.description}}</p>
+            {% comment %} <a href="#" class="btn btn-primary">Read more.</a> {% endcomment %}
+         </div>
+      </div>
+      
+      {% endfor %}
+   </div>
+</main>
+
+
+{% endblock %}

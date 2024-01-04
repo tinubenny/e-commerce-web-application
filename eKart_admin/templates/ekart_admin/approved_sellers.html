@@ -1,0 +1,36 @@
+{% extends 'ekart_admin/base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<main class="col-md-9">
+      <h1>Approved_sellers</h1>
+      <table class="table table-primary">
+         <tr>
+            <td>Sl No</td>
+            <td>Profile picture</td>
+            <td>seller name</td>
+            <td>Email</td>
+            <td>company name</td>
+            <td>City</td>
+            <td>Country</td>
+         </tr>
+         {% for seller in approved_sellers %}
+            <tr>
+               <td>{{forloop.counter}}</td>
+               <td>
+                  <img src="{{seller.profile_image.url}}" alt="" width="50px" height="50px">
+               </td>
+               <td>{{seller.first_name}} {{seller.last_name}}</td>
+               <td>{{seller.email}}</td>
+               <td>{{seller.company_name}}</td>
+               <td>{{seller.city}}</td>
+               <td>{{seller.country}}</td>
+            </tr>
+         {% endfor %}
+      </table>
+</main>
+
+
+{% endblock %}
