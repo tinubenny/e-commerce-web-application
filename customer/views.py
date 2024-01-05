@@ -11,7 +11,13 @@ def customer_home(request):
 
 
 def store(request):
-    return render(request, 'customer/store.html')
+     category_list = Customer.objects.all()
+
+     context = {
+        'category_list' : category_list,
+     }
+
+    return render(request,'customer/store.html',context)
 
 
 def product_detail(request):
