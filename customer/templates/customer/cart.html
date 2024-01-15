@@ -20,152 +20,224 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {% for item in cart_items %}
                             <tr>
                                 <td>
                                     <figure class="itemside align-items-center">
-                                        <div class="aside"><img src="{% static './images/items/11.jpg' %}" class="img-sm"></div>
+                                        <div class="aside"><img src="{{ item.product.image.url }}" class="img-sm"></div>
                                         <figcaption class="info">
-                                            <a href="#" class="title text-dark">Camera Canon EOS M50 Kit</a>
-                                            <p class="text-muted small">Matrix: 25 Mpx <br> Brand: Canon</p>
+                                            <a href="#" class="title text-dark">{{ item.product.product_name }}</a>
+                                            <p class="text-muted small">Seller: {{item.product.seller.first_name }}</p>
+
                                         </figcaption>
                                     </figure>
                                 </td>
                                 <td>
-                                    <!-- col.// -->
                                     <div class="col">
                                         <div class="input-group input-spinner">
                                             <div class="input-group-prepend">
-                                                <button class="btn btn-light" type="button" id="button-plus"> <i
-                                                        class="fa fa-minus"></i> </button>
+                                                <button class="btn btn-light update-cart"
+                                                    data-txtQty="product_qty{{ item.product.id }}"
+                                                    data-itemStock="{{ item.product.stock }}" data-btnType="decrement"
+                                                    data-product_id="{{ item.product.id }}" type="button"> <i
+                                                        class="fa fa-minus"></i>
+                                                </button>
                                             </div>
-                                            <input type="text" class="form-control" value="1">
+
+                                            <input type="text" id="product_qty{{ item.product.id }}"
+                                                class="form-control" value="{{ item.quantity }}">
                                             <div class="input-group-append">
-                                                <button class="btn btn-light" type="button" id="button-minus"> <i
-                                                        class="fa fa-plus"></i> </button>
+                                                <button class="btn btn-light update-cart"
+                                                    data-txtQty="product_qty{{ item.product.id }}"
+                                                    data-itemStock="{{ item.product.stock }}" data-btnType="increment"
+                                                    data-product_id="{{ item.product.id }}" type="button"> <i
+                                                        class="fa fa-plus"></i>
+                                                </button>
+
+
                                             </div>
-                                        </div> <!-- input-group.// -->
-                                    </div> <!-- col.// -->
+                                        </div>  
+                                    </div>
+                                    <div>
+                                        {% if item.product.stock == 0 %}
+                                        <span class="text-danger">Item out of stock</span>
+                                        {% endif %}
+                                    </div>  
                                 </td>
                                 <td>
                                     <div class="price-wrap">
-                                        <var class="price">$1156.00</var>
-                                        <small class="text-muted"> $315.20 each </small>
+                                        <span class="price">  <span class="text-dark">Rs {{item.product.price}}</span></span>
+
                                     </div> <!-- price-wrap .// -->
                                 </td>
                                 <td class="text-right">
-                                    <a href="" class="btn btn-danger"> Remove</a>
+                                    <a href="{% url 'customer:remove_cart_item' item.id %}" class="btn btn-danger"> Remove</a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <figure class="itemside align-items-center">
-                                        <div class="aside"><img src="{% static './images/items/10.jpg' %}" class="img-sm"></div>
-                                        <figcaption class="info">
-                                            <a href="#" class="title text-dark">ADATA Premier ONE microSDXC</a>
-                                            <p class="text-muted small">Size: 256 GB <br> Brand: ADATA </p>
-                                        </figcaption>
-                                    </figure>
-                                </td>
-                                <td>
-                                    <!-- col.// -->
-                                    <div class="col">
-                                        <div class="input-group input-spinner">
-                                            <div class="input-group-prepend">
-                                                <button class="btn btn-light" type="button" id="button-plus"> <i
-                                                        class="fa fa-minus"></i> </button>
-                                            </div>
-                                            <input type="text" class="form-control" value="1">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-light" type="button" id="button-minus"> <i
-                                                        class="fa fa-plus"></i> </button>
-                                            </div>
-                                        </div> <!-- input-group.// -->
-                                    </div> <!-- col.// -->
-                                </td>
-                                <td>
-                                    <div class="price-wrap">
-                                        <var class="price">$149.97</var>
-                                        <small class="text-muted"> $75.00 each </small>
-                                    </div> <!-- price-wrap .// -->
-                                </td>
-                                <td class="text-right">
-                                    <a href="" class="btn btn-danger"> Remove</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <figure class="itemside align-items-center">
-                                        <div class="aside"><img src="{% static './images/items/9.jpg' %}" class="img-sm"></div>
-                                        <figcaption class="info">
-                                            <a href="#" class="title text-dark">Logitec headset for gaming</a>
-                                            <p class="small text-muted">Version: CUH-ZCT2E <br> Brand: Sony</p>
-                                        </figcaption>
-                                    </figure>
-                                </td>
-                                <td>
-                                    <!-- col.// -->
-                                    <div class="col">
-                                        <div class="input-group input-spinner">
-                                            <div class="input-group-prepend">
-                                                <button class="btn btn-light" type="button" id="button-plus"> <i
-                                                        class="fa fa-minus"></i> </button>
-                                            </div>
-                                            <input type="text" class="form-control" value="1">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-light" type="button" id="button-minus"> <i
-                                                        class="fa fa-plus"></i> </button>
-                                            </div>
-                                        </div> <!-- input-group.// -->
-                                    </div> <!-- col.// -->
-                                </td>
-                                <td>
-                                    <div class="price-wrap">
-                                        <var class="price">$98.00</var>
-                                        <small class="text-muted"> $578.00 each</small>
-                                    </div> <!-- price-wrap .// -->
-                                </td>
-                                <td class="text-right">
-                                    <a href="" class="btn btn-danger"> Remove</a>
-                                </td>
-                            </tr>
+
+                            
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div> <!-- card.// -->
 
             </aside> <!-- col.// -->
-            <aside class="col-lg-3">
+            <aside class="col-lg-4">
 
                 <div class="card">
                     <div class="card-body">
                         <dl class="dlist-align">
-                            <dt>Total price:</dt>
-                            <dd class="text-right">$69.97</dd>
+                            <dt>Total Items:</dt>
+                            <dd class="text-right">{{ total_items }} No {{ total_items | pluralize}} </dd>
                         </dl>
                         <dl class="dlist-align">
-                            <dt>Tax:</dt>
-                            <dd class="text-right"> $10.00</dd>
-                        </dl>
-                        <dl class="dlist-align">
-                            <dt>Total:</dt>
-                            <dd class="text-right text-dark b"><strong>$59.97</strong></dd>
+                            <dt>Grand Total</dt>
+                            <dd class="text-right text-dark b"id="grand_total">Rs {{ grand_total }}</dd>
                         </dl>
                         <hr>
                         <p class="text-center mb-3">
                             <img src="{% static './images/misc/payments.png' %}" height="26">
                         </p>
-                        <a href="{% url 'customer:order_complete' %}" class="btn btn-primary btn-block"> Checkout </a>
+                        <button type="button" name="review_cart" id="rzp-button1" class="btn btn-primary btn-block"
+                        {{ disable_checkout }}>
+                        Checkout </button>
                         <a href="{% url 'customer:store' %}" class="btn btn-light btn-block">Continue Shopping</a>
                     </div> <!-- card-body.// -->
                 </div> <!-- card.// -->
 
             </aside> <!-- col.// -->
 
-
         </div> <!-- row.// -->
         <!-- ============================ COMPONENT 1 END .// ================================= -->
 
     </div> <!-- container .//  -->
 </section>
-<!-- ==============
+<script>
+    var btnStatus = ''
+    $('.update-cart').click(function () {
+
+
+        let btnType = $(this).attr('data-btnType')
+        let selectedItemTextId = $(this).attr('data-txtQty')
+        let selectedTxt = document.getElementById(selectedItemTextId)
+        let currentTxtValue = parseInt(selectedTxt.value)
+        let currentItemStock = $(this).attr('data-itemStock')
+        let selectedProductId = $(this).attr('data-product_id')
+
+
+        if (btnType == 'increment') {
+            btnStatus = 'increment'
+            if (currentTxtValue < currentItemStock) {
+                var incrementedValue = currentTxtValue + 1
+                selectedTxt.value = incrementedValue
+            }
+
+        }
+
+        if (btnType == 'decrement') {
+            btnStatus = 'decrement'
+            if (currentTxtValue > 1) {
+                var decrementedValue = currentTxtValue - 1
+
+
+                selectedTxt.value = decrementedValue
+
+            }
+
+
+        }
+        $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": '{{ csrf_token }}'
+            }
+        })
+
+
+        $.ajax({
+            url: "{% url 'customer:update_cart' %}",
+            method: 'POST',
+            data: {
+                id: selectedProductId,
+                qty: selectedTxt.value
+
+            },
+            success: function (response) {
+                 
+                let grandTotal = response.grand_total
+
+                
+                $('#grand_total').html(grandTotal)
+
+
+
+            }
+        })
+
+    })
+
+
+
+    
+</script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+<script>
+    $('#rzp-button1').click(function () {
+
+        $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": '{{ csrf_token }}'
+            }
+        })
+
+
+       
+        $.ajax({
+
+            url: "{% url 'customer:order_product' %}",
+            method: 'POST',
+
+
+            success: function (response) {
+                console.log(response)
+                var options = {
+                    "key": "rzp_test_mFU2QakcmR7iZC",
+                    "amount": response.payment.amount,
+                    "currency": "INR",
+                    "name": "ecommerce",
+                    "order_id": response.payment.id,
+                    "callback_url": "{% url 'customer:update_payment' %}",
+
+                     /*"handler": function (response) {
+
+                         
+                        console.log(response);
+
+                       
+                    
+                     },*/
+                    "theme": {
+                        "color": "#3399cc"
+                    },
+                    "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+                        "name": "Gaurav Kumar", //your customer's name
+                        "email": "gaurav.kumar@example.com",
+                        "contact": "9000090000" //Provide the customer's phone number for better conversion rates 
+                    },
+                }
+
+                var rzpl = new Razorpay(options);
+                rzpl.open()
+
+            }
+
+
+        })
+
+    })
+
+
+</script>
 
 {% endblock %}

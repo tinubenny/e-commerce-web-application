@@ -29,7 +29,8 @@
             <td>{{seller.country}}</td>
             <td>
                <a href="{% url "ekart_admin:approve_seller" seller.id %}" class="btn btn-success">Approve</a>
-               <a href="{% url "ekart_admin:reject_seller" seller.id %}" class="btn btn-success">Reject</a>
+               
+               <a href="{% url "ekart_admin:reject_seller" seller.id %}" class="btn btn-danger">Reject</a>
             </td>
          </tr>
       {% endfor %}

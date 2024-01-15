@@ -8,6 +8,7 @@ urlpatterns = [
     path('product/add',views.add_product,name="add_product"),
     # path('add_category',views.add_category,name="add_category"),
     path('product',views.view_products,name="view_product"),
+    path('product/item/remove/<int:product_id>',views.remove_product,name='remove_product'),
     # path('view_category',views.view_category,name="view_category"),
     path('profile',views.profile,name="profile"),
     path('myOrders',views.view_orders,name="view_orders"),

@@ -1,5 +1,4 @@
-from django.shortcuts import render
-
+from django.shortcuts import redirect, render
 from eKart_admin.models import Category
 from seller.models import Product, Seller
 
@@ -70,6 +69,16 @@ def view_category(request):
 def view_products(request):
     product_list = Product.objects.filter(seller_id = request.session['seller'])
     return render(request, 'seller/view_product.html',{'products': product_list})
+
+def remove_product(request,product_id):
+
+    try:
+        selected_item = Product.objects.get(id = product_id)
+        selected_item.delete()
+    except:
+        pass
+    return redirect('seller:view_product')
+
 
 def profile(request):
     return render(request,'seller/profile.html')

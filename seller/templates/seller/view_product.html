@@ -21,6 +21,8 @@
             <p class="card-text">{{item.description}}</p>
             <h5 class="card-title">{{item.stock}}</h5>
             <h6 class="card-title"></span>Price:<span>{{item.price}}</h6>
+               <a href="{% url 'seller:view_product' item.id %}" class="btn btn-danger"> Remove</a>
+               
          </div>
       </div>
       
