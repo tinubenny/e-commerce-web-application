@@ -1,0 +1,291 @@
+{% extends 'customer/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="section-content padding-y bg">
+    <div class="container">
+
+        <div class="row">
+            <main class="col-md-8">
+                <article class="card mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4">Order Summary</h4>
+                        <div class="row">
+                            {% for item in cart_items %}
+                            <div class="col-md-6">
+                                <figure class="itemside  mb-4">
+                                    <div class="aside"><img src="{{ item.product.image.url }}" class="border img-sm">
+                                    </div>
+                                    <figcaption class="info">
+                                        <p>{{ item.product.product_name }} </p>
+                                        <span class="text-muted">Rs {{ item.product.price }} </span>
+                                        <p>Selected Qty: {{ item.quantity }}</p>
+                                    </figcaption>
+                                </figure>
+                            </div>
+
+                            {% endfor %}
+
+
+
+                        </div>
+                    </div>
+                </article>
+
+                <div id="address-div">
+
+                    {% if address_history %}
+
+                    {% for address in address_history %}
+                    <div class="row">
+
+
+                        <div class="col-md-1">
+                            {% if forloop.last %}
+                            <input type="radio" checked for="customer-address" value="{{ address.id }}"
+                                name="selected_address" id="">
+                            {% else %}
+                            <input type="radio" for="customer-address" value="{{ address.id }}" name="selected_address"
+                                id="">
+
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-11 mt-2">
+                            <div id="customer-address" name="customer-address">
+                                <h6>{{ address.first_name }}</h6>
+                                <span>{{ address.house_name }}</span>
+                                <br>
+                                <span>{{ address.landmark }}, {{ address.state }}, {{ address.pin_code }}</span>
+                                <br>
+                                <span>Phone Number: {{ address.phone }} </span>
+                                <br>
+                                <br>
+                            </div>
+                            <hr>
+                        </div>
+
+
+                    </div>
+
+                    {% endfor %}
+
+                    {% endif %}
+
+                    <div>
+                        <input type="button" value="Add Address" class="btn_address btn btn-primary" name="" id="">
+                    </div>
+
+
+                    <div id="address-content" style="display: none;">
+                        <article class="card mb-4">
+                            <div class="card-body">
+                                <h4 class="card-title mb-4">Contact info</h4>
+                                <form action="reg.py" method="POST">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="form-group col-sm-6">
+                                            <label>First name</label>
+                                            <input type="text" placeholder="Type here" name="fname"
+                                                class="form-control">
+                                        </div>
+                                        <div class="form-group col-sm-6">
+                                            <label>Last name</label>
+                                            <input type="text" placeholder="Type here" name="lname"
+                                                class="form-control">
+                                        </div>
+                                        <div class="form-group col-sm-6">
+                                            <label>Phone</label>
+                                            <input type="text" name="phone" class="form-control">
+                                        </div>
+                                        <div class="form-group col-sm-6">
+                                            <label>Email</label>
+                                            <input type="email" name="email" placeholder="example@gmail.com"
+                                                class="form-control">
+                                        </div>
+                                    </div> <!-- row.// -->
+
+                            </div> <!-- card-body.// -->
+                        </article> <!-- card.// -->
+
+
+                        <article class="card mb-4">
+                            <div class="card-body">
+                                <h4 class="card-title mb-4">Delivery info</h4>
+
+
+
+                                <div class="row">
+
+                                    <div class="form-group col-sm-6">
+                                        <label>State*</label>
+                                        <input type="text" name="state" placeholder="Type here" class="form-control">
+                                    </div>
+                                    <div class="form-group col-sm-6">
+                                        <label>landmark*</label>
+                                        <input type="text" name="landmark" placeholder="Type here" class="form-control">
+                                    </div>
+
+                                    <div class="form-group col-sm-6">
+                                        <label>House</label>
+                                        <input type="text" name="house" placeholder="Type here" class="form-control">
+                                    </div>
+
+                                    <div class="form-group col-sm-6">
+                                        <label>pincode</label>
+                                        <input type="text" name="pincode" placeholder="" class="form-control">
+                                    </div>
+
+                                    <div class="form-group col-sm-4">
+                                        <input type="submit" value="Use this address" class="btn btn-warning" name=""
+                                            id="">
+                                    </div>
+                                </div> <!-- row.// -->
+                                </form>
+                            </div> <!-- card-body.// -->
+                        </article> <!-- card.// -->
+
+                    </div>
+
+
+                    <div id="new_address">
+
+
+
+                    </div>
+                </div>
+
+
+            </main>
+            <aside class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <dl class="dlist-align">
+                            <dt>Total Items:</dt>
+                            <dd class="text-right">{{ total_items }} No {{ total_items | pluralize}} </dd>
+                        </dl>
+                        <dl class="dlist-align">
+                            <dt>Grand Total</dt>
+                            <dd class="text-right text-dark b">Rs {{ grand_total }}</dd>
+                        </dl>
+
+                        <hr>
+                        <p class="text-center mb-3">
+                            <img src="{% static './images/misc/payments.png' %}" height="26">
+                        </p>
+
+                        <form action="" method="POST">
+                            {% csrf_token %}
+                            <button type="button" name="review_cart" id="rzp-button1" class="btn btn-primary btn-block"
+                                {{ disable_checkout }}>
+                                Checkout </button>
+                        </form>
+
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+
+    </div> <!-- container .//  -->
+</section>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    $('.btn_address').click(function () {
+
+        $('address-content').removeAttr('style', 'display:none')
+        $(this).hide()
+
+        // clonedDiv = sourceDiv.cloneNode(true)
+        // targetDiv = document.getElementById('new_address')
+        // targetDiv.appendChild(clonedDiv)
+    })
+</script>
+
+<script>
+    $('#rzp-button1').click(function () {
+
+        $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": '{{ csrf_token }}'
+            }
+        })
+
+
+        let selectedAddressradio = document.getElementsByName('selected_address')
+
+        let selectedAddress;
+
+        for (radio of selectedAddressradio) {
+            if (radio.checked == true) {
+                selectedAddress = radio.value
+                console.log(selectedAddress);
+            }
+        }
+        $.ajax({
+
+            url: "{% url 'customer:order_product' %}",
+            method: 'POST',
+
+
+            success: function (response) {
+                var options = {
+                    "key": "rzp_test_mFU2QakcmR7iZC",
+                    "amount": response.payment.amount,
+                    "currency": "INR",
+                    "name": "ecommerce",
+                    "order_id": response.payment.id,
+                    "callback_url": '/order/complete/'+ selectedAddress,
+
+                    // "handler": function (response) {
+
+                         
+                    //     console.log(response);
+
+                       
+                    //     updatePayment(selectedAddress)
+                    // },
+                    "theme": {
+                        "color": "#3399cc"
+                    },
+                    "prefill": { //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+                        "name": "Gaurav Kumar", //your customer's name
+                        "email": "gaurav.kumar@example.com",
+                        "contact": "9000090000" //Provide the customer's phone number for better conversion rates 
+                    },
+                }
+
+                var rzpl = new Razorpay(options);
+                rzpl.open()
+
+            }
+
+
+        })
+
+    })
+
+
+
+    function updatePayment(address) {
+
+        $.ajaxSetup({
+            headers: {
+                "X-CSRFToken": '{{ csrf_token }}'
+            }
+        })
+
+
+        $.ajax({
+            url: "{% url 'customer:update_payment' % }",
+            data: {
+                customerAddress: address
+            }
+
+        })
+
+
+    }
+</script>
+
+{% endblock %}

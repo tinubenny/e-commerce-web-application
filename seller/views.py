@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from eKart_admin.models import Category
 from seller.models import Product, Seller
 
@@ -20,7 +20,7 @@ def add_product(request):
         product_no =  request.POST['product_code']
         product_name = request.POST['product_name']
         category = request.POST['category']
-        description = request.POST['product_code']
+        description = request.POST['description']
         stock = request.POST['stock']
         price = request.POST['price']
         image = request.FILES['image']
@@ -70,15 +70,14 @@ def view_products(request):
     product_list = Product.objects.filter(seller_id = request.session['seller'])
     return render(request, 'seller/view_product.html',{'products': product_list})
 
-def remove_product(request,product_id):
+def remove_product(request, product_id):
+    product = get_object_or_404(Product, id=product_id, seller_id=request.session['seller'])
 
-    try:
-        selected_item = Product.objects.get(id = product_id)
-        selected_item.delete()
-    except:
-        pass
+    # Perform any additional validation or logic before deleting
+    # For example, you might want to check if the product is in the user's inventory.
+
+    product.delete()
     return redirect('seller:view_product')
-
 
 def profile(request):
     return render(request,'seller/profile.html')

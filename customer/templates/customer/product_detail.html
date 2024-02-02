@@ -12,7 +12,7 @@
                 <aside class="col-md-6">
                     <article class="gallery-wrap">
                         <div class="img-big-wrap">
-                            <a href="#"><img src="{{product.image.url}}"></a>
+                            <a href="#"><img src="{{ product.image.url }}"></a>
                         </div> <!-- img-big-wrap.// -->
 
                     </article> <!-- gallery-wrap .end// -->
@@ -20,16 +20,30 @@
                 <main class="col-md-6 border-left">
                     <article class="content-body">
 
-                        <h2 class="title">{{product.product_name}}</h2>
+                        <h2 class="title"> {{ product.product_name | title }}</h2>
 
                         <div class="mb-3">
-                            <var class="price h4">RS {{product.price}}</var>
+                            <var class="price h5">RS {{ product.price }}</var>
                         </div>
 
-                        <p>{{product.description}}</p>
+    
+                        <hr>
 
 
-                        
+                        <div class="d-flex  my-2">
+                            <span class="count ml-2 bg-success badge badge-light text-white mr-2"
+                                style="width: 48px; font-size: 15px;">{{ product.rating }}
+                                <span> ★</span></span>
+                            <span>{{ review_count }} Review{{ review_count | pluralize }}</span>
+
+
+
+
+                        </div>
+
+                        <br>
+
+                        <p>Description: {{ product.description }}</p>
                         <hr>
                         {% if product.stock > 0 %}
                         Stock : <span class="text-success">Available</span>
@@ -37,11 +51,11 @@
 
                         {% if item_exist %}
                         <br>
-                        <a href="{% url 'customer:cart'  %}" class="btn  btn-primary"> <span class="text">Go to
+                        <a href="{% url 'customer:cart' 'list' %}" class="btn  btn-primary"> <span class="text">Go to
                                 cart</span></a>
 
+
                         {% else %}
-                        
                         <form action="" method="POST">
                             {% csrf_token %}
                             <input type="submit" value="Add to Cart" class="btn  btn-primary">
@@ -53,6 +67,7 @@
                         Stock : <span class="text-danger">Out Of Stock</span>
 
                         {% endif %}
+                        <i class="fas fa-shopping-cart"></i> </a>
                     </article> <!-- product-info-aside .// -->
                 </main> <!-- col.// -->
             </div> <!-- row.// -->
@@ -62,39 +77,269 @@
         <br>
 
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-12">
 
-                <header class="section-heading">
-                    <h3>Customer Reviews </h3>
+                <div class="d-flex justify-content-around">
+                    <header class="section-heading">
+                        <h3>Customer Reviews </h3>
 
-                </header>
+                    </header>
+                    {% if already_reviewed %}
+                    <p><a class="btn btn-info mt-2" href="{% url 'customer:add_product_qstn' product.id %}">Post your
+                            Questions</a></p>
+
+
+                    {% else %}
+                    <p><a class="btn btn-info mt-2" href="{% url 'customer:product_review' product.id %}">Rate this
+                            product</a></p>
+
+
+                    {% endif %}
+                </div>
+                <div class="rating-review  d-flex ">
+
+                    <div class="d-flex  flex-column">
+
+                        <h2>{{ product.rating }} ★</h2>
+
+                        <div class="d-flex flex-column my-2">
+
+                            <span>{{ review_count }} Review{{ review_count | pluralize }}</span>
+
+
+                        </div>
+                    </div>
+
+                    <div class="ml-5">
+
+
+                        <ul class="list-unstyled">
+
+
+
+
+
+
+                            {% for rating in rating_list %}
+
+                            <li>{{rating.rating}}★ <span class="ml-2"> <progress value="{{rating.percentage}}"
+                                        max="100"></progress></span> {{ rating.count }} </li>
+                            {% endfor %}
+                        </ul>
+
+                    </div>
+                </div>
 
                 <article class="box mb-3">
-                    <div class="icontext w-100">
-                        <img src="{% static './images/avatars/avatar1.jpg' %}" class="img-xs icon rounded-circle">
+
+                    {% for review in reviews %}
+                    <div class="icontext w-100 mt-2">
+
                         <div class="text">
-                            <span class="date text-muted float-md-right">24.04.2020 </span>
-                            <h6 class="mb-1">Mike John </h6>
+
+                            <div class="d-flex">
+                                <h6 class="mb-1 ml-2 ">{{ review.title | title}}</h6>
+                                <span class="count ml-2 bg-success badge badge-light text-white mr-2"
+                                    style="width: 48px; font-size: 15px;">{{ review.rating }}<span> ★</span></span>
+
+                            </div>
+
 
                         </div>
                     </div> <!-- icontext.// -->
-                    <div class="mt-3">
+                    <div class="my-2">
                         <p>
-                            Dummy comment Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                            quis nostrud exercitation ullamco laboris nisi ut aliquip
+                            {{ review.review }}
                         </p>
                     </div>
+                    <div class="review-img">
+                        {% for product_image in review.reviewimage_set.all %}
+                        <img src="{{ product_image.image.url }}" style="height: 100px;">
+                        {% endfor %}
+
+                    </div>
+
+
+                    <div style=" margin-top: 8px;font-size: 12px;
+                    color: #878787;
+                    margin-right: 8px;">
+                        <span class="text-muted p-2">{{ review.customer.first_name | title }}</span>
+                        <svg width="14" height="14" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg"
+                            class="_2a1p_T">
+                            <g>
+                                <circle cx="6" cy="6" r="6" fill="#878787"></circle>
+                                <path stroke="#FFF" stroke-width="1.5" d="M3 6l2 2 4-4" fill="#878787"></path>
+                            </g>
+                        </svg>
+
+                        <span style="font-size: 10px;">Cetified user</span>
+
+                    </div>
+                    <hr>
+                    {% endfor %}
+
+                </article>
+
+
+                <article class="box mb-3">
+                    <div>
+                        <h4 class="mb-1 ml-2">Questions And Answers</h4>
+                    </div>
+
+                    {% for question in questions %}
+
+                    <div class="mb-3">
+
+
+                        <hr>
+                        <div>
+
+                            <h6 class="mt-2">Q: <span>{{ question.question }}</span></h6>
+
+
+                            {% if question.answers_set.all|length > 1 %}
+                            <div id="answerDiv">
+                                <b class="mt-1 d-block"> 
+                                    {% if question.answers_set.all|length > 0 %}A:
+                                    {{question.answers_set.all.0.answer}} </b> {% endif %}
+                                    <span
+                                    class="text-muted p-2" style="font-size: 15px;">{{question.answers_set.all.0.customer.first_name}}</span>
+                                    <div style=" display: inline; margin-top: 8px;font-size: 12px;
+                            color: #878787;
+                            margin-right: 8px;">
+                                        
+                                      <span>
+                                        <svg width="14" height="14" viewBox="0 0 12 12"
+                                        xmlns="http://www.w3.org/2000/svg" class="_2a1p_T">
+                                        <g>
+                                            <circle cx="6" cy="6" r="6" fill="#878787"></circle>
+                                            <path stroke="#FFF" stroke-width="1.5" d="M3 6l2 2 4-4" fill="#878787">
+                                            </path>
+                                        </g>
+                                    </svg>
+                                      </span>
+
+                                        <span style="font-size: 10px;">Cetified user</span>
+                                        <br>
+
+                                    </div>
+
+
+                                
+                            </div>
+
+                            <a href="" data-bs-toggle="modal" data-qstn="{{ question.id }}"
+                                data-answerSet="{{ question.answers_set.all }}" id="modalLink"
+                                data-bs-target="#faqModal">View all Answers</a>
+                            <div class="modal fade" id="faqModal"   tabindex="-1" aria-labelledby="exampleModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog" style="max-width: 800px;">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title bold" id="selectedQstnText">Q: Is it good?</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">x</button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div id="answerDivModal">
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            {% else %}
+                            <b class="mt-1 d-block"> {% if question.answers_set.all|length > 0 %}A:
+                                {{question.answers_set.all.0.answer}} </b>
+
+                            <div>
+                                <div style=" margin-top: 8px;font-size: 12px;
+                            color: #878787;
+                            margin-right: 8px;">
+                                    <span
+                                        class="text-muted p-2">{{question.answers_set.all.0.customer.first_name}}</span>
+                                    <svg width="14" height="14" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg"
+                                        class="_2a1p_T">
+                                        <g>
+                                            <circle cx="6" cy="6" r="6" fill="#878787"></circle>
+                                            <path stroke="#FFF" stroke-width="1.5" d="M3 6l2 2 4-4" fill="#878787">
+                                            </path>
+                                        </g>
+                                    </svg>
+
+                                    <span style="font-size: 10px;">Cetified user</span>
+                                    <br>
+
+                                </div>
+
+
+                            </div>
+                            {% endif %}
+                            {% endif %}
+                            <hr>
+                        </div>
+
+
+
+                    </div>
+
+                    {% endfor %}
+
+
+
                 </article>
 
 
 
-            </div> <!-- col.// -->
-        </div> <!-- row.// -->
+            </div>
+        </div>
 
 
-    </div> <!-- container .//  -->
+    </div>
 </section>
-<!-- ========================= SECTION CONTENT END// ========================= -->
+
+<script>    
+    $('#modalLink').click(function () {
+        let selectedQstn = $(this).attr('data-qstn')
+
+
+        console.log(selectedQstn);
+
+        $.ajax({
+            url: "{% url 'customer:display_qstn_details' %}",
+            method: 'GET',
+            data: {
+                qstnId: selectedQstn
+            },
+
+            success: function (response) {
+
+                var answerSet = response.data
+
+
+                for (let i of answerSet) {
+               
+                    var answerDiv = document.getElementById('answerDiv')
+                    var modalBody = document.getElementById('answerDivModal')
+                    let cloneDiv = answerDiv.cloneNode(true)
+                    console.log(cloneDiv);
+                     
+                    modalBody.appendChild(cloneDiv)
+                    cloneDiv.children[0].innerHTML = 'A: ' + i.answer   
+                    cloneDiv.children[1].innerHTML = i.customer   
+                    
+                }
+
+                console.log(answerSet);
+            }
+        })
+
+
+
+
+    })
+</script>
 
 {% endblock %}

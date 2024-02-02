@@ -6,27 +6,33 @@
 
 
 <main class="col-md-9">
-   <h1>view_category</h1>
-   <div class="row">
-      {% for item in products %}
+   <h1>products</h1>
+   <div class="container">
 
-      <div class="card card-product-grid" style="width: 18rem;">
-         <a href="">
-            <img src="{{item.image.url}}" class="card-img-top" alt="..." height="100%" width="100%">
-
-         </a>
-         <div class="card-body">
-            <h5 class="card-title">{{item.product_name}}</h5>
-            <h5 class="card-title">{{item.category}}</h5>
-            <p class="card-text">{{item.description}}</p>
-            <h5 class="card-title">{{item.stock}}</h5>
-            <h6 class="card-title"></span>Price:<span>{{item.price}}</h6>
-               <a href="{% url 'seller:view_product' item.id %}" class="btn btn-danger"> Remove</a>
+      <div class="row">
+         {% for item in products %}
+         
+         <div class="card card-product-grid col-md-3 mt-3" style="width: 18rem;" >
+            <a href="">
+               <img src="{{item.image.url}}" class="card-img-top" alt="..." height="100%" width="100%">
                
+            </a>
+            <div class="card-body">
+               <h5 class="card-title">{{item.product_name}}</h5>
+               <h5 class="card-title">{{item.category}}</h5>
+               <p class="card-text">{{item.description}}</p>
+               <h5 class="card-title">{{item.stock}}</h5>
+               <h6 class="card-title"></span>Price:<span>{{item.price}}</h6>
+                  <form method="post" action="{% url 'seller:remove_product' item.id %}">
+                     {% csrf_token %}
+                     <button type="submit" class="btn btn-danger">Remove</button>
+                  </form>
+                  
+               </div>
+            </div>
+            
+            {% endfor %}
          </div>
-      </div>
-      
-      {% endfor %}
    </div>
 </main>
 

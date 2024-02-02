@@ -22,7 +22,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('ekart/', include('eKart_admin.urls')),
-    path('seller/', include('seller.urls')),
+    path('seller/', include('seller.urls', namespace='seller')),
     path('', include('customer.urls'))
 
 

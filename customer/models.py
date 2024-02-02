@@ -39,6 +39,22 @@ class Order(models.Model):
     class Meta:
         db_table = 'order_tb'
 
+class DeliveryAddress(models.Model):
+    customer = models.ForeignKey(Customer, on_delete = models.CASCADE)
+    first_name = models.CharField(max_length =  20)
+    last_name =  models.CharField(max_length =  20)
+    email =  models.CharField(max_length =  50)
+    phone =  models.BigIntegerField()
+    state =  models.CharField(max_length =  50)
+    district =  models.CharField(max_length =  50)
+    city =  models.CharField(max_length =  50)
+    landmark =  models.CharField(max_length =  50)
+    house_name =  models.CharField(max_length =  50)
+    pin_code =  models.IntegerField()
+
+    class Meta:
+        db_table = 'address_tb'
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete = models.CASCADE)
@@ -57,7 +73,44 @@ class OrderItem(models.Model):
     class Meta:
         db_table = 'orderItem_tb'
 
+class ProductReview(models.Model):
+     
+    product = models.ForeignKey(Product, on_delete = models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete = models.CASCADE)
+    title = models.CharField(max_length = 100)
+    review = models.CharField(max_length = 200)
+    rating = models.IntegerField()
+    created_at = models.DateField(default = date.today)
 
+    class Meta:
+        db_table = 'review_tb'
+
+
+class ReviewImage(models.Model):
+     
+    review = models.ForeignKey(ProductReview, on_delete = models.CASCADE)
+    image = models.ImageField(upload_to = 'Review_Pic/')
+     
+
+    class Meta:
+        db_table = 'reviewPic_tb'
+        
+
+class ProductQuestion(models.Model):
+    product = models.ForeignKey(Product, on_delete = models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete = models.CASCADE)
+    question = models.CharField(max_length = 200)
+    
+    class Meta:
+        db_table = 'question_tb'
+
+class Answers(models.Model):
+    question = models.ForeignKey(ProductQuestion, on_delete = models.CASCADE)
+    answer = models.CharField(max_length = 100)
+    customer = models.ForeignKey(Customer, on_delete = models.SET_NULL, null = True)
+
+    class Meta:
+        db_table = 'answer_tb'
     
     
 

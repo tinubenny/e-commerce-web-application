@@ -1,0 +1,247 @@
+{% extends 'customer/base.html' %}
+{% block header %}
+
+<style>
+    .checked {
+        color: orange;
+    }
+
+    .rating {
+        font-size: 25px;
+    }
+
+    .upload-icon::before {
+        /* Use the appropriate CSS property to insert the icon */
+        content: "\f093";
+        /* Example: using Font Awesome icon code */
+        font-family: "Font Awesome";
+        /* Use the appropriate font family for your icon library */
+        font-size: 20px;
+        color: #333;
+        /* Icon color */
+        padding: 10px;
+        background-color: #eee;
+        /* Icon background color */
+        border: 1px solid #ccc;
+    }
+
+    .file-uploader {
+        font-size: 50px;
+    }
+
+    .file-uploader {
+        position: relative;
+        display: inline-block;
+        overflow: hidden;
+    }
+
+    /* Hide the default file input button */
+    .file-input {
+        display: none;
+    }
+
+    .rating-div button {
+        border: 0;
+        background: none;
+    }
+</style>
+{% endblock %}
+{% block content %}
+
+<div class="container-fluid">
+
+
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="review-about">
+                <h5>What makes a good review</h5>
+            </div>
+            <hr>
+            <div>
+                <h5> Have you used this product?</h5>
+                <p>Your review should be about your experience with the product.</p>
+            </div>
+            <hr>
+            <div>
+                <h5> Why review a product?</h5>
+                <p>Your valuable feedback will help fellow shoppers decide!</p>
+            </div>
+            <hr>
+            <div>
+                <h5>How to review a product?
+                </h5>
+                <p>
+                    Your review should include facts. An honest opinion is always appreciated. If you have an
+                    issue with the product or service please contact us from the <a href="#">help centre.</a>
+
+                </p>
+            </div>
+        </div>
+
+ 
+        <div class="col-md-9">
+            {% if purchased %}
+
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+            <div>
+                <h5>Rate this product</h5>
+
+                <div class="d-flex">
+                <div class="rating-div">
+                    <button type="button" id="star1" data-starCount="1" class="rating fa  fa-star checked"></button>
+                    <button  type="button"  id="star2" data-starCount="2" class="rating fa fa-star  "></button>
+                    <button  type="button"  id="star3" data-starCount="3" class="rating fa fa-star  "></button>
+                    <button  type="button"  id="star4" data-starCount="4" class="rating fa fa-star"></button>
+                    <button  type="button"  id="star5" data-starCount="5" class="rating fa fa-star"></button>
+                </div>
+                <b id="feedbackValue" class="ml-3 "></b>
+                <input type="hidden" value="1" id="startCount" name="star_count">
+            </div>
+               
+                <hr>
+            </div>
+            <div>
+                <div>
+                    <h5>Title(optional)</h5>
+                </div>
+                <div class="form-group">
+                    <textarea  class="form-control" id="txtTitle" name="title" rows="2">
+                 </textarea>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <h5>Review this product</h5>
+                    
+                </div>
+                <div class="form-group">
+
+                    <textarea class="form-control" name="customer_review" rows="8">
+                        </textarea>
+
+                </div>
+            </div>
+            <label class="file-uploader">
+                <input type="file" name="images" multiple class="file-input">
+                <i class="bi bi-images"></i>
+
+            </label>
+
+            <div class="form-group text-center">
+
+                <input type="submit" class="btn btn-warning">
+            </div>
+        </form>
+            {% else %}
+            <div class="not-purchased d-flex justify-content-center ">
+
+                <div style="height: 500px;">
+                    <div class="d-flex align-items-center mt-5">
+                        <div>
+                            <h3>Haven't purchased this product?</h3>
+
+                            <p>Sorry! You are not allowed to review this product since you haven't bought it on eKart.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            {% endif %}
+
+
+        </div>
+
+    </div>
+
+
+
+
+</div>
+
+
+<script>
+    var feedbackList = [
+        {
+            starCount:1,
+            message: 'Very Bad',
+            color: 'red',
+            title: 'Did not meet expectations'
+        },
+        {
+            starCount:2,
+            message: 'Bad',
+            color: 'orange',
+            title: 'Expected a better product'
+        },
+        {
+            starCount:3,
+            message: 'Good',
+            color: 'green',
+            title: 'Good'
+        },
+        {
+            starCount:4,
+            message: 'Very Good',
+            color: 'green',
+            title: 'Delighful'
+        },
+        {
+            starCount:5,
+            message: 'Excellent',
+            color: 'green',
+            title: 'Great product'
+        }
+    ]
+    $('.rating').click(function () {
+
+        let starBtn = $('.rating')
+
+        let currentStarCount = $(this).attr('data-starCount')
+        let hasClass  = $(this).hasClass('checked')
+        
+        if(currentStarCount == 1){
+          if(starBtn.eq(1).hasClass('checked') == false){
+            console.log('here');
+            return false
+          }
+        }
+
+        if(!hasClass){
+
+
+            for(let i = 0; i < currentStarCount; i++){
+
+               starBtn.eq(i).addClass('checked')
+            }   
+
+        }
+        else{
+            let nxtBtn = starBtn.eq(currentStarCount)
+            if(nxtBtn.hasClass('checked')){
+                for(let i = currentStarCount ; i < starBtn.length; i++){
+                starBtn.eq(i).removeClass('checked')
+             }
+            }
+            else{
+                starBtn.eq(currentStarCount-1).removeClass('checked')
+            }
+             
+        }
+        let title = feedbackList[currentStarCount-1]['title']
+        let value = feedbackList[currentStarCount-1]['message']
+        let color = feedbackList[currentStarCount-1]['color']
+        let starCount = feedbackList[currentStarCount-1]['starCount']
+
+        $('#txtTitle').html(title)
+        $('#feedbackValue').html(value)
+        $('#feedbackValue').css('color', color)
+        $('#feedbackValue').addClass('fw-bold')
+        $('#startCount').val(starCount)
+
+
+    })
+     
+</script>
+{% endblock %}
